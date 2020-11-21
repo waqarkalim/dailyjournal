@@ -5,7 +5,9 @@ import { Chart } from "react-charts";
 const Style = styled.div`
     .graph {
         width: 500px;
-        height: 300px
+        height: 400px;
+        margin-bottom: 100px;
+        margin-right: 30px;
     }
 
     .graph-container {
@@ -24,7 +26,8 @@ export class Graph extends React.Component {
         super(props);
         this.state = {
             scoreData: this.formattedData(this.props.data)[0],
-            comparativeData: this.formattedData(this.props.data)[1]
+            comparativeData: this.formattedData(this.props.data)[1],
+            cumsum: this.formattedData(this.props.data)[2]
         }
     }
 
@@ -33,13 +36,29 @@ export class Graph extends React.Component {
         var scoreResult = [];
         var comparativeResult = [];
 
+
         for (var i = data.length-1; i >= 0; i--) {
             scoreResult.push({x: i, y:data[i].score});
             comparativeResult.push({x: i,y: data[i].comparative});
         }
         console.log(scoreResult);
 
-        return [[{label: "Scores", data: scoreResult}], [{label: "Comparatives", data: comparativeResult}]];
+        var j;
+        var z
+        var cumsum = [];
+        for (j = scoreResult.length-1; j >= 0; j--) {
+            var sum = 0;
+            for (z = j; z < scoreResult.length; z++) {
+                sum += scoreResult[z].y;
+            }
+            cumsum.push(sum);
+        }
+        cumsum = cumsum.map((sum, i) => {
+            return {x: i, y: sum}
+        })
+        console.log(cumsum);
+
+        return [[{label: "Scores", data: scoreResult}], [{label: "Comparatives", data: comparativeResult}], [{label:"Cumulative Sum", data: cumsum}]];
     }
     render() {
         var axes = [{ primary: true, type: 'linear', position: 'bottom' },
@@ -49,13 +68,17 @@ export class Graph extends React.Component {
             <Style>
                 <div className="graph-container">
                     <div className="graph">
-                        <Chart data={this.state.scoreData} axes={axes} />
+                        <h4>Negative and Positive Word Usage</h4>
+                        <Chart tooltip primaryCursor secondaryCursor data={this.state.scoreData} axes={axes} />
                     </div>
                     <div className="graph">
-                        <Chart data={this.state.comparativeData} axes={axes} />
+                        <h4>Cumulative Usage of Negative and Positive Words</h4>
+                        <Chart tooltip primaryCursor secondaryCursor data={this.state.cumsum} axes={axes} />
                     </div>
                 </div>
-                
+                <div>
+                    <p>Negative numbers indicate negative tone while positive numbers indicate positive tone.</p>
+                </div>
             </Style>
         );
     }

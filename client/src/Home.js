@@ -1,18 +1,21 @@
 import React from "react";
-import { Container, Typography, TextField, Button, Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
+import { Container, Typography, TextField, Button, Select, MenuItem, FormControl, IconButton } from "@material-ui/core";
 import styled from "styled-components";
 import axios from "axios";
 
 import { Entry } from "./components/Entry";
 import { Graph } from "./components/Graph";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const Style = styled.div`
     .main-container {
         text-align: center;
+        
     }
 
     .main-header {
-        margin-top: 50px;
+        margin-top: 100px;
+        font-size: 60px;
     }
 
     .header-underline {
@@ -60,6 +63,7 @@ export class Home extends React.Component {
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleEntryDelete = this.handleEntryDelete.bind(this);
         this.handleVisibleEntriesChange = this.handleVisibleEntriesChange.bind(this);
+        this.handleAccessResourcesClick = this.handleAccessResourcesClick.bind(this);
     }
 
     getTodaysDate() {
@@ -134,6 +138,13 @@ export class Home extends React.Component {
         })
     }
 
+    handleAccessResourcesClick(event) {
+        const anchor = (event.target.ownerDocument || document).querySelector("#mental-resources-anchor");
+        if (anchor) {
+            anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }
+
     componentDidMount() {
         axios.get("/fetchEntries").then(res => { // fetches entries and parses them to string
             var sortedByDate = res.data.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -178,19 +189,20 @@ export class Home extends React.Component {
                 <Style>
                     <Container className="main-container">
                         <Typography className="main-header" variant="h3">How are you feeling today?</Typography>
+                        <p>Access Mental Health Resources <IconButton onClick={this.handleAccessResourcesClick}><ExpandMoreIcon /></IconButton></p>
                         <hr className="header-underline"/>
 
                         <div className="form-wrapper">
                             <form onSubmit={this.handleFormSubmit}>
                             <TextField 
-                                label="title"
+                                label="Subject"
                                 variant="outlined"
                                 className="form-title-input"
                                 onChange={this.handleFormTitleChange}
                                 fullWidth
                             />
                             <TextField 
-                                label="body"
+                                label="What's up?"
                                 variant="outlined"
                                 className="form-body-input"
                                 onChange={this.handleFormBodyChange}
@@ -207,7 +219,6 @@ export class Home extends React.Component {
                             </form>
                         </div>
                         <FormControl variant="outlined" className="visible-entries-button">
-                            <InputLabel>#entries</InputLabel>
                             <Select
                                 onChange={this.handleVisibleEntriesChange}
                                 value={this.state.visibleEntries}
@@ -220,6 +231,7 @@ export class Home extends React.Component {
                         {display}
                         {graph}
                     </Container>
+                    <div id="mental-resources-anchor"></div>
                 </Style>
             </React.Fragment>
         )

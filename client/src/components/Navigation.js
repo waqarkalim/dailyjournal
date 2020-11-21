@@ -30,7 +30,7 @@ export class Navigation extends React.Component {
         return(
             <React.Fragment>
                 <Style>
-                    <AppBar position="static" className="navigation-main">
+                    <AppBar position="fixed" className="navigation-main">
                         <Toolbar>
                             <a href="http://www.google.com" target="_blank" rel="noreferrer"><img src={logo} alt="logo" className="logo"/></a>
                             <Typography className="header" variant="h5">Daily Journal</Typography>
