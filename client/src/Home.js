@@ -159,7 +159,8 @@ export class Home extends React.Component {
             }
 
             var graph;
-            graph = <Graph data={entries} />;
+            var graphKey = new Date();
+            graph = <Graph data={entries} key={graphKey}/>;
 
             display = entries.map((entry, index) => {
                 return <Entry 

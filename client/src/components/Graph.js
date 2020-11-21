@@ -3,7 +3,19 @@ import styled from "styled-components";
 import { Chart } from "react-charts";
 
 const Style = styled.div`
+    .graph {
+        width: 500px;
+        height: 300px
+    }
 
+    .graph-container {
+        margin-top: 50px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        overflow: hidden;
+    }
 
 `
 
@@ -11,43 +23,39 @@ export class Graph extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: this.formattedData(this.props.data)
+            scoreData: this.formattedData(this.props.data)[0],
+            comparativeData: this.formattedData(this.props.data)[1]
         }
     }
 
     formattedData(data) {
         console.log(data);
-        var result = [];
-        for (var i = data.length; i >= 0; i--) {
-            console.log(data[i]);
-            result.push({x: i, y:i});
+        var scoreResult = [];
+        var comparativeResult = [];
+
+        for (var i = data.length-1; i >= 0; i--) {
+            scoreResult.push({x: i, y:data[i].score});
+            comparativeResult.push({x: i,y: data[i].comparative});
         }
-        return [{label: "Series 1", data: result}];
+        console.log(scoreResult);
+
+        return [[{label: "Scores", data: scoreResult}], [{label: "Comparatives", data: comparativeResult}]];
     }
     render() {
-        var data = [
-            {
-                label: 'Series 1',
-                data: [{ x: 1, y: 10 }, { x: 2, y: 10 }, { x: 3, y: 10 }]
-            },
-            {
-                label: 'Series 2',
-                data: [{ x: 1, y: 10 }, { x: 2, y: 10 }, { x: 3, y: 10 }]
-            },
-            {
-                label: 'Series 3',
-                data: [{ x: 1, y: 10 }, { x: 2, y: 10 }, { x: 3, y: 10 }]
-            }
-        ]
-
         var axes = [{ primary: true, type: 'linear', position: 'bottom' },
-        { type: 'linear', position: 'left' }
-    ]
+        { type: 'linear', position: 'left' }]
+
         return(
             <Style>
-                <div style={{width: '400px',height: '300px'}}>
-                    <Chart data={this.state.data} axes={axes} />
+                <div className="graph-container">
+                    <div className="graph">
+                        <Chart data={this.state.scoreData} axes={axes} />
+                    </div>
+                    <div className="graph">
+                        <Chart data={this.state.comparativeData} axes={axes} />
+                    </div>
                 </div>
+                
             </Style>
         );
     }
