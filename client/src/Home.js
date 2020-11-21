@@ -4,6 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 
 import { Entry } from "./components/Entry";
+import { Graph } from "./components/Graph";
 
 const Style = styled.div`
     .main-container {
@@ -94,13 +95,16 @@ export class Home extends React.Component {
         event.preventDefault();
 
         axios.post("/addEntry", this.state).then(res => {
-            for (var i = 0; i < res.data.length; i++) { // parse results to strings
-                res.data[i].title = this.bufferToString(res.data[i].title);
-                res.data[i].body = this.bufferToString(res.data[i].body);
-                res.data[i].date = res.data[i].date.substring(0, 10);
+            var sortedByDate = res.data.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            for (var i = 0; i < sortedByDate.length; i++) {
+                sortedByDate[i].title = this.bufferToString(sortedByDate[i].title);
+                sortedByDate[i].body = this.bufferToString(sortedByDate[i].body);
+                sortedByDate[i].date = sortedByDate[i].date.substring(0, 10);
             }
+
             this.setState({
-                entries: res.data
+                entries: sortedByDate
             });
         })
 
@@ -132,13 +136,15 @@ export class Home extends React.Component {
 
     componentDidMount() {
         axios.get("/fetchEntries").then(res => { // fetches entries and parses them to string
-            for (var i = 0; i < res.data.length; i++) {
-                res.data[i].title = this.bufferToString(res.data[i].title);
-                res.data[i].body = this.bufferToString(res.data[i].body);
-                res.data[i].date = res.data[i].date.substring(0, 10);
+            var sortedByDate = res.data.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            for (var i = 0; i < sortedByDate.length; i++) {
+                sortedByDate[i].title = this.bufferToString(sortedByDate[i].title);
+                sortedByDate[i].body = this.bufferToString(sortedByDate[i].body);
+                sortedByDate[i].date = sortedByDate[i].date.substring(0, 10);
             }
             this.setState({
-                entries: res.data
+                entries: sortedByDate
             }, () => console.log(this.state));
         });
     }
@@ -151,6 +157,9 @@ export class Home extends React.Component {
             if (entries.length > this.state.visibleEntries) {
                 entries = entries.slice(0, this.state.visibleEntries); // cut down number of entries rendered if needed
             }
+
+            var graph;
+            graph = <Graph data={entries} />;
 
             display = entries.map((entry, index) => {
                 return <Entry 
@@ -208,11 +217,7 @@ export class Home extends React.Component {
                             </Select>
                         </FormControl>
                         {display}
-                        <Entry 
-                            title="Test entry for graph"
-                            date="whatever"
-                            body={<div style={{height: "400px", backgroundColor:"red", zIndex:"999"}}></div>}
-                        />
+                        {graph}
                     </Container>
                 </Style>
             </React.Fragment>
