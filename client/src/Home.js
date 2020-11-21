@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Typography, TextField, Button } from "@material-ui/core";
+import { Container, Typography, TextField, Button, Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -35,6 +35,10 @@ const Style = styled.div`
     .submit {
         margin-top: 20px;
     }
+
+    .visible-entries-button {
+        margin-top: 30px;
+    }
 `
 
 export class Home extends React.Component {
@@ -46,13 +50,15 @@ export class Home extends React.Component {
             formBody: "",
             date: this.getTodaysDate(),
             userId: 2341,
-            entries: null
+            entries: null,
+            visibleEntries: 10
         }
 
         this.handleFormTitleChange = this.handleFormTitleChange.bind(this);
         this.handleFormBodyChange = this.handleFormBodyChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleEntryDelete = this.handleEntryDelete.bind(this);
+        this.handleVisibleEntriesChange = this.handleVisibleEntriesChange.bind(this);
     }
 
     getTodaysDate() {
@@ -61,7 +67,7 @@ export class Home extends React.Component {
         return todaysDate.substring(0, 10);
     }
 
-    bufferToString(buffer) {
+    bufferToString(buffer) { // reading from mysql
         var buf = Buffer.from(buffer);
         return buf.toString();
     }
@@ -78,13 +84,18 @@ export class Home extends React.Component {
         })
     }
 
+    handleVisibleEntriesChange(event) {
+        this.setState({
+            visibleEntries: event.target.value
+        })
+    }
+
     handleFormSubmit(event) {
         event.preventDefault();
 
         axios.post("/addEntry", this.state).then(res => {
-            for (var i = 0; i < res.data.length; i++) {
+            for (var i = 0; i < res.data.length; i++) { // parse results to strings
                 res.data[i].title = this.bufferToString(res.data[i].title);
-                res.data[i].sentiment = this.bufferToString(res.data[i].sentiment);
                 res.data[i].body = this.bufferToString(res.data[i].body);
                 res.data[i].date = res.data[i].date.substring(0, 10);
             }
@@ -97,26 +108,22 @@ export class Home extends React.Component {
     }
 
     handleEntryDelete(id, event) {
-        console.log("delete" + id);
-        axios.post("/deleteEntry", {entry_id: id}).then(res => {
+        axios.post("/deleteEntry", {entry_id: id}).then(res => { // first, delete entry in database
             var entries = this.state.entries;
-            console.log(entries);
 
             var indexToBeDeleted = -1;
 
-            for (var i = 0; i < entries.length; i++) {
+            for (var i = 0; i < entries.length; i++) { // then, delete entry in this.state
                 if (entries[i].entry_id === id) {
                     indexToBeDeleted = i;
                     break;
                 }
             }
 
-            console.log(indexToBeDeleted);
-
             if (indexToBeDeleted > -1) {
                 entries.splice(indexToBeDeleted, 1);
             }
-            console.log(entries);
+
             this.setState({
                 entries: entries
             })
@@ -124,31 +131,35 @@ export class Home extends React.Component {
     }
 
     componentDidMount() {
-        axios.get("/fetchEntries").then(res => {
+        axios.get("/fetchEntries").then(res => { // fetches entries and parses them to string
             for (var i = 0; i < res.data.length; i++) {
                 res.data[i].title = this.bufferToString(res.data[i].title);
-                res.data[i].sentiment = this.bufferToString(res.data[i].sentiment);
                 res.data[i].body = this.bufferToString(res.data[i].body);
                 res.data[i].date = res.data[i].date.substring(0, 10);
             }
             this.setState({
                 entries: res.data
-            }, () => console.log(this.state))
+            }, () => console.log(this.state));
         });
     }
 
     render() {
-        var entries = this.state.entries;
-        let display;
-        if (entries !== null) {
-            display = this.state.entries.map((entry, index) => {
+        if (this.state.entries !== null) { // make sure entries have been fetched
+            var entries = this.state.entries;
+            var display;
+
+            if (entries.length > this.state.visibleEntries) {
+                entries = entries.slice(0, this.state.visibleEntries); // cut down number of entries rendered if needed
+            }
+
+            display = entries.map((entry, index) => {
                 return <Entry 
                     key={index}
                     id={entry.entry_id}
                     title={entry.title}
                     date={entry.date}
                     body={entry.body}
-                    delete={this.handleEntryDelete}
+                    delete={this.handleEntryDelete} // child component can pass data to parent!
                 />
             })
         }
@@ -185,7 +196,23 @@ export class Home extends React.Component {
                             </Button>
                             </form>
                         </div>
+                        <FormControl variant="outlined" className="visible-entries-button">
+                            <InputLabel>#entries</InputLabel>
+                            <Select
+                                onChange={this.handleVisibleEntriesChange}
+                                value={this.state.visibleEntries}
+                            >
+                                <MenuItem value={10}>10</MenuItem>
+                                <MenuItem value={20}>20</MenuItem>
+                                <MenuItem value={50}>50</MenuItem>
+                            </Select>
+                        </FormControl>
                         {display}
+                        <Entry 
+                            title="Test entry for graph"
+                            date="whatever"
+                            body={<div style={{height: "400px", backgroundColor:"red", zIndex:"999"}}></div>}
+                        />
                     </Container>
                 </Style>
             </React.Fragment>
