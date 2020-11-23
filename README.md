@@ -1,3 +1,5 @@
+# Mood For Thought
+
 ### Inspiration
 
 We wanted to create a convenient, modernized journaling application with methods and components that are backed by science. Our spin on the readily available journal logging application is our take on the idea of awareness itself. What does it mean to be aware? What form or shape can mental health awareness come in? These were the key questions that we were curious about exploring, and we wanted to integrate this idea of awareness into our application. The “awareness” approach of the journal functions by providing users with the tools to track and analyze their moods and thoughts, as well as allowing them to engage with the visualizations of the journal entries to foster meaningful reflections.
