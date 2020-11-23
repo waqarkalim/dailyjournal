@@ -1,4 +1,4 @@
-# <img style="marginTop: 20px;" src="/client/src/assets/logo.png" alt="logo" width="50"/> Mood For Thought
+# Mood For Thought
 
 ### Inspiration
 
