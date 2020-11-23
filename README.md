@@ -1,5 +1,3 @@
-<div align="center"><img align="center" src="client/src/assets/logo.png" width="100px"/></div>
-
 # Mood For Thought
 
 ### Inspiration
