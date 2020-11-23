@@ -1,6 +1,6 @@
 # Mood For Thought
 
-![MOOD_FOR_THOUGHT_LOGO](/client/src/assets/logo.png =10x)
+![MOOD_FOR_THOUGHT_LOGO](/client/src/assets/logo.png =100x200)
 
 ### Inspiration
 
