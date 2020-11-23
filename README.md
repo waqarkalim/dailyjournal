@@ -1,3 +1,5 @@
+<img src="client/src/assets/logo.png" width="50px"/>
+
 # Mood For Thought
 
 ### Inspiration
