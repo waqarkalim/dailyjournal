@@ -1,7 +1,6 @@
 # Mood For Thought
 
-![MOOD_FOR_THOUGHT_LOGO]
-(https://github.com/waqarkalim/dailyjournal/edit/main/client/src/assets/logo.png)
+![MOOD_FOR_THOUGHT_LOGO](/client/src/assets/logo.png)
 
 ### Inspiration
 
