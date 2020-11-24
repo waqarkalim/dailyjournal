@@ -16,7 +16,6 @@ import styled from "styled-components";
 import axios from "axios";
 
 import { Entry } from "./components/Entry";
-import { Graph } from "./components/Graph";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import AppBar from "./components/AppBar.jsx";
@@ -25,7 +24,7 @@ import EntryListContainer from "./components/EntryListContainer.jsx";
 import Graph from "./components/Graph.jsx";
 
 import Footer from "./components/Footer.jsx";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+
 const Style = styled.div`
   .main-container {
     text-align: center;
