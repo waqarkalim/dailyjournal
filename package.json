@@ -1,0 +1,23 @@
+{
+  "name": "dailyjournal",
+  "version": "1.0.0",
+  "description": "### Inspiration",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd server && npm run server\" \"cd client && npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://waqarkalim:waqaar4878@github.com/waqarkalim/dailyjournal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/waqarkalim/dailyjournal/issues"
+  },
+  "homepage": "https://github.com/waqarkalim/dailyjournal#readme",
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  }
+}
