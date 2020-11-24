@@ -15,9 +15,12 @@ import MailIcon from "@material-ui/icons/Mail";
 import AddIcon from "@material-ui/icons/Add";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import Button from "@material-ui/core/Button";
 
 import AddButton from "./AddButton.jsx";
 import logo from "../assets/moodForThought.png";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -139,13 +142,22 @@ export default function PrimaryAppBar(props) {
     </Menu>
   );
 
+  const handleAccessResourcesClick = (event) => {
+    const anchor = (event.target.ownerDocument || document).querySelector(
+      "#mental_resources_anchor"
+    );
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    props.scrollToBottom(anchor);
+  };
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="static" style={{ backgroundColor: "#6b705c" }}>
         <Toolbar>
           <img src={logo} style={{ height: "70px", marginRight: "20px" }} />
           <Typography className={classes.title} variant="h6" noWrap>
-            Daily Journal
+            Mood For Thought
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -165,6 +177,19 @@ export default function PrimaryAppBar(props) {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <Button
+              // variant="outlined"
+              variant="contained"
+              color="#6b705c"
+              onClick={handleAccessResourcesClick}
+              startIcon={<LocalHospitalIcon />}
+            >
+              Mental Health Resources
+            </Button>
+            <div style={{ margin: "20px" }}></div>
+            {/* <IconButton onClick={handleAccessResourcesClick}>
+              <ExpandMoreIcon />
+            </IconButton> */}
             <AddButton
               onChange={(event) => {
                 handleAddThoughts(event);

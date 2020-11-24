@@ -1,33 +1,3 @@
-// import React from "react";
-// import Entry from "./Entry.jsx";
-
-// class EntryList extends React.Component {
-//   constructor(props) {
-//     super(props);
-//   }
-
-//   render() {
-//     return (
-// <div>
-//   {this.props.entries.map((entry, i) => {
-//     return (
-//       <Entry
-//         key={i}
-//         title={entry.title}
-//         text={entry.text}
-//         sentiment={entry.sentiment}
-//         date={entry.date}
-//         style={{ margin: "20px" }}
-//       />
-//     );
-//   })}
-// </div>
-//     );
-//   }
-// }
-
-// export default EntryList;
-
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -42,7 +12,7 @@ import Entry from "./Entry.jsx";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    width: "50%",
+    // width: "50%",
   },
   paper: {
     height: 140,
@@ -76,39 +46,45 @@ export default function EntryGrid(props) {
   //   })}
   // </div>
   return (
-    <Grid container className={classes.root} spacing={2}>
-      <Grid item xs={12}>
-        <Grid container justify="left" spacing={spacing}>
-          {props.entries.map((entry, i) => {
-            if (props.searchParams != "") {
-              return;
-            }
-            return (
-              <Grid item>
-                <Entry
-                  key={i}
-                  entry_id={entry.entry_id}
-                  title={entry.title}
-                  body={entry.body}
-                  user_id={entry.user_id}
-                  sentiment={entry.score}
-                  comparative={entry.comparative}
-                  date={entry.date}
-                  style={{ margin: "20px" }}
-                  onDelete={(event) => {
-                    console.log("Here");
-                    console.log(props.entry_id);
-                    props.onDelete(event);
-                  }}
-                  onEdit={(event) => {
-                    props.onEdit(event);
-                  }}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Grid>
+    // <Grid container justify="center" className={classes.root} spacing={0}>
+    //   <Grid item xs={12}>
+    <Grid
+      container
+      justify="center"
+      // spacing={spacing}
+      // style={{ backgroundColor: "#4E6766" }}
+      style={{ backgroundColor: "#ffe8d6" }}
+    >
+      {props.entries.map((entry, i) => {
+        if (props.searchParams != "") {
+          return;
+        }
+        return (
+          <Grid item xs={6}>
+            <Entry
+              key={i}
+              entry_id={entry.entry_id}
+              title={entry.title}
+              body={entry.body}
+              user_id={entry.user_id}
+              sentiment={entry.score}
+              comparative={entry.comparative}
+              date={entry.date}
+              style={{ margin: "20px" }}
+              onDelete={(event) => {
+                console.log("Here");
+                console.log(props.entry_id);
+                props.onDelete(event);
+              }}
+              onEdit={(event) => {
+                props.onEdit(event);
+              }}
+            />
+          </Grid>
+        );
+      })}
     </Grid>
+    //   </Grid>
+    // </Grid>
   );
 }

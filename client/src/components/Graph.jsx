@@ -1,6 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { Chart } from "react-charts";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Typography from "@material-ui/core/Typography";
 
 const Style = styled.div`
   .graph {
@@ -97,10 +105,15 @@ class Graph extends React.Component {
           </div>
         </div>
         <div>
-          <p>
-            Negative numbers indicate negative tone while positive numbers
-            indicate positive tone.
-          </p>
+          <Card style={{ margin: "20px" }}>
+            <CardContent>
+              <Typography variant="body2" component="h5">
+                Negative numbers indicate negative tone while positive numbers
+                indicate positive tone.
+              </Typography>
+            </CardContent>
+          </Card>
+          <p></p>
         </div>
       </Style>
     );

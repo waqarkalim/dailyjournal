@@ -8,6 +8,9 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Paper,
+  Grid,
+  IconButton,
 } from "@material-ui/core";
 import styled from "styled-components";
 import axios from "axios";
@@ -17,6 +20,10 @@ import { Entry } from "./components/Entry";
 import AppBar from "./components/AppBar.jsx";
 import EntryListContainer from "./components/EntryListContainer.jsx";
 
+import Graph from "./components/Graph.jsx";
+
+import Footer from "./components/Footer.jsx";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 const Style = styled.div`
   .main-container {
     text-align: center;
@@ -252,76 +259,46 @@ export class Home extends React.Component {
             }}
             onChange={(event) => {
               this.addThought(event);
-              //   this.handleFormTitleChange(event.title);
-              //   this.handleFormBodyChange(event.body);
-              //   this.handleFormSubmit();
+            }}
+            scrollToBottom={(event) => {
+              event.scrollIntoView({ behavior: "smooth", block: "center" });
             }}
           />
-          <EntryListContainer
-            entries={this.state.entries ? this.state.entries : []}
-            onDelete={(id) => this.handleEntryDelete(id, null)}
-            onEdit={(event) =>
-              this.handleEntryEdit(
-                Object.assign({ formBody: event.body }, event)
-              )
-            }
-            searchParams={this.state.searchParams}
-          />
+          {/* <IconButton onClick={this.handleAccessResourcesClick}>
+            <ExpandMoreIcon />
+          </IconButton> */}
+          <div style={{ flexGrow: 1 }}>
+            <Grid container spacing={0}>
+              <Grid item xs={6}>
+                <Paper elevation={0}>
+                  <EntryListContainer
+                    entries={this.state.entries ? this.state.entries : []}
+                    onDelete={(id) => this.handleEntryDelete(id, null)}
+                    onEdit={(event) =>
+                      this.handleEntryEdit(
+                        Object.assign({ formBody: event.body }, event)
+                      )
+                    }
+                    searchParams={this.state.searchParams}
+                    // style={{ width: "50%", float: "left" }}
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={6}>
+                <Paper elevation={0}>
+                  <Graph
+                    data={this.state.entries ? this.state.entries : ""}
+                    key={new Date()}
+                    // style={{ width: "50%", float: "right" }}
+                  />
+                </Paper>
+              </Grid>
+            </Grid>
+          </div>
+          <Footer />
+          <div id="mental_resources_anchor"></div>
         </Style>
       </React.Fragment>
     );
-    // <React.Fragment>
-    //     <Style>
-    //         <Container className="main-container">
-    //             <Typography className="main-header" variant="h3">How are you feeling today?</Typography>
-    //             <hr className="header-underline"/>
-
-    //             <div className="form-wrapper">
-    //                 <form onSubmit={this.handleFormSubmit}>
-    //                 <TextField
-    //                     label="title"
-    //                     variant="outlined"
-    //                     className="form-title-input"
-    //                     onChange={this.handleFormTitleChange}
-    //                     fullWidth
-    //                 />
-    //                 <TextField
-    //                     label="body"
-    //                     variant="outlined"
-    //                     className="form-body-input"
-    //                     onChange={this.handleFormBodyChange}
-    //                     fullWidth
-    //                     multiline
-    //                 />
-    //                 <Button
-    //                     variant="outlined"
-    //                     className="submit"
-    //                     type="submit"
-    //                 >
-    //                     Add Entry
-    //                 </Button>
-    //                 </form>
-    //             </div>
-    //             <FormControl variant="outlined" className="visible-entries-button">
-    //                 <InputLabel>#entries</InputLabel>
-    //                 <Select
-    //                     onChange={this.handleVisibleEntriesChange}
-    //                     value={this.state.visibleEntries}
-    //                 >
-    //                     <MenuItem value={10}>10</MenuItem>
-    //                     <MenuItem value={20}>20</MenuItem>
-    //                     <MenuItem value={50}>50</MenuItem>
-    //                 </Select>
-    //             </FormControl>
-    //             {display}
-    //             <Entry
-    //                 title="Test entry for graph"
-    //                 date="whatever"
-    //                 body={<div style={{height: "400px", backgroundColor:"red", zIndex:"999"}}></div>}
-    //             />
-    //         </Container>
-    //     </Style>
-    // </React.Fragment>
-    // );
   }
 }

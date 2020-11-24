@@ -63,14 +63,14 @@ export default function Entry(props) {
 
   if (props.sentiment > 0) {
     outputEmoji = ":)";
-  } else if (props.sentiment == 0) {
+  } else if (props.sentiment === 0) {
     outputEmoji = ":|";
   } else {
     outputEmoji = ":(";
   }
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} style={{ backgroundColor: "#edf6f9" }}>
       <CardContent>
         <Typography
           className={classes.title}
@@ -96,9 +96,6 @@ export default function Entry(props) {
           body={props.body}
           onChange={handleEdit}
         />
-        {/* <Button size="small" onClick={handleEdit}>
-          <EditIcon fontSize="small" />
-        </Button> */}
         <Button size="small" onClick={handleDelete}>
           <DeleteIcon fontSize="small" />
         </Button>
